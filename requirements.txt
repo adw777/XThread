@@ -1,0 +1,8 @@
+requests 
+beautifulsoup4 
+openai
+python-dotenv
+tweepy 
+requests_oauthlib
+fastapi 
+uvicorn
