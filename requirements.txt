@@ -6,3 +6,4 @@ tweepy
 requests_oauthlib
 fastapi 
 uvicorn
+requests-oauthlib
