@@ -21,7 +21,7 @@ if not consumer_key or not consumer_secret:
 def load_tweet_content():
     """Load tweet content from mechinterp.json file"""
     try:
-        with open('sparseautoencoder.json', 'r', encoding='utf-8') as file:
+        with open('op\sparseautoencoder.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
             if 'tweets' not in data:
                 raise ValueError("JSON file must contain a 'tweets' array")

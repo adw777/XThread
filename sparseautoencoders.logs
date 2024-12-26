@@ -1,0 +1,64 @@
+INFO:__main__:Waiting 30 seconds before starting to post...
+INFO:__main__:Attempting to post tweet 1 of 5
+INFO:__main__:Successfully posted tweet 1
+INFO:__main__:Waiting 30 seconds before next tweet...
+INFO:__main__:Attempting to post tweet 2 of 5
+INFO:__main__:Successfully posted tweet 2
+INFO:__main__:Waiting 35 seconds before next tweet...
+INFO:__main__:Attempting to post tweet 3 of 5
+INFO:__main__:Successfully posted tweet 3
+INFO:__main__:Waiting 40 seconds before next tweet...
+INFO:__main__:Attempting to post tweet 4 of 5
+INFO:__main__:Successfully posted tweet 4
+INFO:__main__:Waiting 45 seconds before next tweet...
+INFO:__main__:Attempting to post tweet 5 of 5
+INFO:__main__:Successfully posted tweet 5
+INFO:__main__:Waiting 50 seconds before next tweet...
+INFO:__main__:Successfully posted thread of 5 tweets
+[
+    {
+        "data": {
+            "edit_history_tweet_ids": [
+                "1872359744226447429"
+            ],
+            "id": "1872359744226447429",
+            "text": "Sparse Autoencoders (SAEs) are gaining popularity for understanding complex machine learning models like large language models. They help break down the model's computations into more interpretable parts."
+        }
+    },
+    {
+        "data": {
+            "edit_history_tweet_ids": [
+                "1872359872068722891"
+            ],
+            "id": "1872359872068722891",
+            "text": "In neural networks, individual neurons don't always correspond neatly to specific concepts; they can represent a mix of different ideas. This \"superposition\" concept complicates understanding model behavior. \u00b71"
+        }
+    },
+    {
+        "data": {
+            "edit_history_tweet_ids": [
+                "1872360020953969059"
+            ],
+            "id": "1872360020953969059",
+            "text": "Sparse Autoencoders work by transforming input data into an intermediate vector with added sparsity constraints. This encourages the model to create a compact, sparse representation of the input, making it easier to interpret. \u00b72"
+        }
+    },
+    {
+        "data": {
+            "edit_history_tweet_ids": [
+                "1872360190743572641"
+            ],
+            "id": "1872360190743572641",
+            "text": "By using Sparse Autoencoders, we can unravel the black box nature of deep learning models and gain more insights into how they process information. This can lead to better understanding and potentially improved model performance. \u00b73"
+        }
+    },
+    {
+        "data": {
+            "edit_history_tweet_ids": [
+                "1872360381538242910"
+            ],
+            "id": "1872360381538242910",
+            "text": "Understanding the mechanisms behind complex machine learning models like large language models can unlock new possibilities for interpretability and model improvement. How can we leverage these insights to enhance real-world applications? \u00b74"
+        }
+    }
+]
