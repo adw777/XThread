@@ -2,3 +2,4 @@ op
 venv
 .env
 __pycache__
+grok.py

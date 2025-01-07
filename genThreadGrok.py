@@ -13,7 +13,10 @@ load_dotenv()
 
 class TwitterThreadGenerator:
     def __init__(self, api_key):
-        self.client = OpenAI(api_key=api_key)
+        self.client = OpenAI(
+            api_key=api_key,
+            base_url="https://api.x.ai/v1",
+        )
         
     def extract_article_content(self, url):
         headers = {
@@ -52,38 +55,51 @@ class TwitterThreadGenerator:
 
     def generate_thread(self, article_content, include_image=True):
         cleaned_text = ' '.join(article_content['text'].split())
+        logger.info(f"Article title: {article_content['title']}")
+        logger.info(f"Content length: {len(cleaned_text)}")
         
-        prompt = f"""You're a subject matter expert who just read this article and want to share your insights. Write a thread that adds value by explaining the key points in your own words and providing additional context or analysis.
+        # Create a more focused prompt
+        prompt = f"""Write an engaging Twitter thread explaining this topic in detail from 
+        first principles. Break down the key concepts in simple terms and explain with examples.
 
-    The article is about: {article_content['title']}
+        Title: {article_content['title']}
 
-    Article content: {cleaned_text[:4000]}
+        Key content to analyze: {cleaned_text[:8000]}  # Reduced content length
 
-    Important guidelines:
-    - Write in a natural, conversational tone like a real person would use
-    - Avoid generic introductions or "thread" announcements
-    - Don't use hashtags
-    - Don't copy-paste from the article - explain concepts in your own words
-    - Share genuine insights and analysis
-    - Each tweet must be complete sentences and MUST be under 250 characters
-    - Focus on what would actually interest or help your followers
-    - Aim for 5-7 tweets max unless the topic truly needs more
-    - End with something thought-provoking or actionable
+        Requirements:
+        1. Write tweets that explain the main ideas with super high agency
+        2. Make complex concepts accessible, use super good examples for exmplanation
+        3. Be factual and to the point like elon musk
+        4. No hashtags no bullshit
+        5. Each tweet must be under 250 characters, cause we dont have premium, but you can add as many tweets you want, its a thread after all
 
-    Format: Use '++' to separate tweets. Each tweet must be a complete thought under 250 characters."""
+        Separate each tweet with '++'"""
+        
+        logger.info("Sending request to Grok API...")
 
-        response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system", 
-                    "content": "You are an insightful AI expert who writes engaging, natural Twitter threads. Keep each tweet concise and complete, never exceeding 250 characters."
-                },
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=1000,
-            temperature=0.7
-        )
+        try:
+            response = self.client.chat.completions.create(
+                model="grok-2-latest",
+                messages=[
+                    {
+                        "role": "system", 
+                        "content": "You are just like Elon Musk, write super cool, to the point & worthy enough Twitter threads that people wait for everyday."
+                    },
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=4000,  # Increased max tokens
+                temperature=0.7
+            )
+            
+            logger.info(f"Raw response from API: {response}")
+            
+            if not response.choices[0].message.content:
+                logger.error("Received empty response from API")
+                raise ValueError("Empty response from API")
+                
+        except Exception as e:
+            logger.error(f"Error during API call: {str(e)}")
+            raise
         
         thread_content = response.choices[0].message.content.strip()
         tweets = [tweet.strip() for tweet in thread_content.split('++') if tweet.strip()]
@@ -117,9 +133,9 @@ class TwitterThreadGenerator:
             output["tweets"].append(tweet_obj)
         
         try:
-            with open('new.json', 'w', encoding='utf-8') as file:
+            with open('grok2.json', 'w', encoding='utf-8') as file:
                 json.dump(output, file, indent=2, ensure_ascii=False)
-                logger.info(f"Successfully saved thread with {len(tweets)} tweets to mechinterp.json")
+                logger.info(f"Successfully saved thread with {len(tweets)} tweets to new.json")
         except Exception as e:
             logger.error(f"Error saving JSON file: {str(e)}")
             raise
@@ -127,9 +143,10 @@ class TwitterThreadGenerator:
         return output
 
 def main():
-    api_key = os.getenv('OPENAI_API_KEY')
+    api_key = os.getenv('XAI_API_KEY')
+
     if not api_key:
-        raise ValueError("Please set OPENAI_API_KEY environment variable")
+        raise ValueError("Please set XAI_API_KEY environment variable")
     
     generator = TwitterThreadGenerator(api_key)
     url = input("Enter the article URL: ")
